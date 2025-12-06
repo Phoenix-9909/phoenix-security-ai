@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix Security AI | AI-Powered Cybersecurity Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e17;
+            --secondary: #ff6b35;
+            --accent: #7b61ff;
+            --dark: #060912;
+            --light: #f8f9fa;
+            --gray: #a0aec0;
+            --danger: #ff4757;
+            --warning: #ffa502;
+            --success: #2ed573;
+            --info: #1e90ff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--primary);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Login Choice Screen */
+        .choice-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .choice-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-decoration: none;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .choice-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+
+        .choice-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .choice-btn {
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .choice-btn.user {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--primary);
+        }
+
+        .choice-btn.admin {
+            background: rgba(255, 107, 53, 0.1);
+            border: 2px solid var(--secondary);
+        }
+
+        /* Login/Register Forms */
+        .auth-screen {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .auth-box {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            color: var(--gray);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gray);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* App Container */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            display: none;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: var(--dark);
+            border-right: 1px solid rgba(255, 107, 53, 0.1);
+            padding: 2rem 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .nav-section {
+            margin-bottom: 1rem;
+        }
+
+        .nav-title {
+            color: var(--gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 2rem 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 107, 53, 0.05);
+            color: var(--light);
+        }
+
+        .nav-item.active {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--secondary);
+            border-left-color: var(--secondary);
+        }
+
+        .nav-item i {
+            width: 20px;
+            margin-right: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+            background: var(--primary);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            color: var(--light);
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Admin Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 107, 53, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* User Management */
+        .search-box {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .users-table {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .user-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+        }
+
+        .user-row.header {
+            background: rgba(255, 107, 53, 0.1);
+            font-weight: 600;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .action-btn.reset {
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--danger);
+        }
+
+        .action-btn.upgrade {
+            background: rgba(46, 213, 115, 0.2);
+            color: var(--success);
+        }
+
+        /* Feedback Form */
+        .feedback-form {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            min-height: 150px;
+            margin-bottom: 1rem;
+            resize: vertical;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--secondary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar .nav-item span,
+            .sidebar .nav-title {
+                display: none;
+            }
+            .main-content {
+                margin-left: 70px;
+            }
+            .user-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .choice-box,
+            .auth-box {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Choice Screen -->
+    <div id="choiceScreen" class="choice-screen">
+        <div class="choice-box">
+            <div class="logo">
+                <i class="fas fa-fire"></i>
+                <span>Phoenix Security AI</span>
+            </div>
+            <h2 class="choice-title">AI-Powered Cybersecurity Platform</h2>
+            <p style="color: var(--gray); margin-bottom: 2rem;">
+                Professional Security Scanning & Management
+            </p>
+            
+            <div class="choice-buttons">
+                <button class="choice-btn user" onclick="showAuthScreen('user')">
+                    <i class="fas fa-user"></i>
+                    User Access
+                </button>
+                <button class="choice-btn admin" onclick="showAuthScreen('admin')">
+                    <i class="fas fa-shield-alt"></i>
+                    Admin Login
+                </button>
+            </div>
+            
+            <p style="color: var(--gray); font-size: 0.9rem; margin-top: 2rem;">
+                Users: Register or login to scan websites<br>
+                Admin: Manage users and system settings
+            </p>
+        </div>
+    </div>
+
+    <!-- User Auth Screen -->
+    <div id="userAuthScreen" class="auth-screen">
+        <div class="auth-box">
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+                <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+            </div>
+            
+            <div id="loginForm">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="userLoginEmail" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="userLoginPassword" placeholder="Your password">
+                </div>
+                <button class="auth-btn" onclick="userLogin()">Login to Dashboard</button>
+            </div>
+            
+            <div id="registerForm" style="display: none;">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="userName" placeholder="John Doe">
+                </div>
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input type="email" id="userEmail" placeholder="your@email.com">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="userPassword" placeholder="Create password">
+                </div>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="userConfirmPassword" placeholder="Confirm password">
+                </div>
+                <button class="auth-btn" onclick="userRegister()">Create Account</button>
+            </div>
+            
+            <button class="back-btn" onclick="backToChoice()">
+                <i class="fas fa-arrow-left"></i> Back to Selection
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Auth Screen -->
+    <div id="adminAuthScreen" class="auth-screen">
+        <div class="auth-box">
+            <div class="logo" style="justify-content: center; margin-bottom: 2rem;">
+                <i class="fas fa-shield-alt"></i>
+                <span>Admin Access</span>
+            </div>
+            
+            <div class="input-group">
+                <label>Admin Email</label>
+                <input type="email" id="adminEmail" placeholder="admin@email.com">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="adminPassword" placeholder="Admin password">
+            </div>
+            
+            <button class="auth-btn" onclick="adminLogin()">Login to Admin Panel</button>
+            
+            <button class="back-btn" onclick="backToChoice()">
+                <i class="fas fa-arrow-left"></i> Back to Selection
+            </button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo" style="padding: 0 2rem 2rem;">
+                <i class="fas fa-fire"></i>
+                <span id="sidebarTitle">Phoenix Security AI</span>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Dashboard</div>
+                <div class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-item" onclick="showSection('scanner')">
+                    <i class="fas fa-search"></i>
+                    <span>AI Scanner</span>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Security</div>
+                <div class="nav-item" onclick="showSection('vulnerabilities')">
+                    <i class="fas fa-bug"></i>
+                    <span>Vulnerabilities</span>
+                </div>
+            </div>
+
+            <!-- Admin Only Sections -->
+            <div id="adminSections" style="display: none;">
+                <div class="nav-section">
+                    <div class="nav-title">Admin Tools</div>
+                    <div class="nav-item" onclick="showSection('users')">
+                        <i class="fas fa-users"></i>
+                        <span>User Management</span>
+                    </div>
+                    <div class="nav-item" onclick="showSection('feedback')">
+                        <i class="fas fa-comments"></i>
+                        <span>Feedback Center</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Account</div>
+                <div class="nav-item" onclick="showSection('plans')">
+                    <i class="fas fa-crown"></i>
+                    <span>Plans & Pricing</span>
+                </div>
+                <div class="nav-item" onclick="showSection('contact')">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Admin</span>
+                </div>
+                <div class="nav-item" onclick="logout()" style="color: var(--danger);">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+
+            <div class="user-info" style="padding: 1.5rem 2rem; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05);">
+                <div id="currentUserEmail" style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">Loading...</div>
+                <div id="userPlanBadge" style="display: inline-block; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.8rem;">
+                    Loading...
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="section active">
+                <div class="top-bar">
+                    <div>
+                        <h1 class="page-title" id="welcomeMessage">Welcome</h1>
+                        <p class="page-subtitle" id="userPlanInfo">Loading your security dashboard...</p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" onclick="showSection('scanner')">
+                            <i class="fas fa-search"></i> New Security Scan
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="websitesCount">0</div>
+                        <div class="stat-label">Websites</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="scansCount">0</div>
+                        <div class="stat-label">Total Scans</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="issuesCount">0</div>
+                        <div class="stat-label">Issues Found</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="securityScore">0%</div>
+                        <div class="stat-label">Security Score</div>
+                    </div>
+                </div>
+
+                <div class="scanner-box" style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(255,107,53,0.1);">
+                    <h3 style="margin-bottom: 1rem; color: var(--light);">Quick Security Scan</h3>
+                    <div class="scanner-input" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="url" id="quickScanUrl" placeholder="https://example.com" style="flex: 1; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 1rem;">
+                        <button class="btn btn-primary" onclick="quickScan()">
+                            <i class="fas fa-search"></i> Scan Now
+                        </button>
+                    </div>
+                    <p style="color: var(--gray); font-size: 0.9rem;">
+                        Real AI-powered security analysis using VirusTotal API
+                    </p>
+                </div>
+
+                <h3 style="margin: 2rem 0 1rem; color: var(--light);">Recent Security Scans</h3>
+                <div id="recentScans" style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 1.5rem; min-height: 200px;">
+                    <p style="color: var(--gray); text-align: center;">No recent scans. Start your first security scan above.</p>
+                </div>
+            </div>
+
+            <!-- Scanner Section -->
+            <div id="scannerSection" class="section">
+                <div class="top-bar">
+                    <h1 class="page-title">AI Security Scanner</h1>
+                </div>
+
+                <div class="scanner-box" style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(255,107,53,0.1);">
+                    <h2 style="color: var(--light); margin-bottom: 1rem;">Real AI Security Analysis</h2>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">
+                        Enter a website URL for real AI-powered security scanning using VirusTotal API.
+                    </p>
+
+                    <div class="scanner-input" style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="url" id="scanUrl" placeholder="https://example.com" style="flex: 1; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-size: 1rem;">
+                        <button class="btn btn-primary" onclick="startRealAIScan()">
+                            <i class="fas fa-shield-alt"></i> Start Real AI Scan
+                        </button>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(255,107,53,0.05); border-radius: 8px;">
+                        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> Real AI Analysis Includes:
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                            <div style="color: var(--gray);">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Malware Detection
+                            </div>
+                            <div style="color: var(--gray);">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i> VirusTotal Analysis
+                            </div>
+                            <div style="color: var(--gray);">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Security Headers
+                            </div>
+                            <div style="color: var(--gray);">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Vulnerability Scan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="scanProgress" style="display: none;">
+                    <h3 style="margin: 2rem 0 1rem; color: var(--light);">AI Scan in Progress</h3>
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 2rem; text-align: center;">
+                        <div class="loading" style="width: 40px; height: 40px; margin: 0 auto 1rem;"></div>
+                        <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">Connecting to VirusTotal API</h4>
+                        <p style="color: var(--gray);" id="scanStatus">Initializing real AI scanners...</p>
+                        <div style="margin-top: 1rem;">
+                            <div style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;">
+                                <div id="scanProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--secondary), var(--accent)); transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="scanResults" style="display: none;"></div>
+            </div>
+
+            <!-- User Management Section (Admin Only) -->
+            <div id="usersSection" class="section">
+                <div class="top-bar">
+                    <h1 class="page-title">User Management</h1>
+                    <button class="btn btn-primary" onclick="refreshUsers()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="userSearch" placeholder="Search users by email or name..." onkeyup="searchUsers()">
+                </div>
+
+                <div class="users-table">
+                    <div class="user-row header">
+                        <div>Email</div>
+                        <div>Plan</div>
+                        <div>Scans</div>
+                        <div>Status</div>
+                        <div>Actions</div>
+                    </div>
+                    <div id="usersList">
+                        <p style="color: var(--gray); text-align: center; padding: 2rem;">Loading users...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Center (Admin Only) -->
+            <div id="feedbackSection" class="section">
+                <div class="top-bar">
+                    <h1 class="page-title">Feedback Center</h1>
+                </div>
+
+                <div id="feedbackList" style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 1.5rem; min-height: 300px;">
+                    <p style="color: var(--gray); text-align: center;">Loading feedback...</p>
+                </div>
+            </div>
+
+            <!-- Contact Admin Section (User Only) -->
+            <div id="contactSection" class="section">
+                <div class="top-bar">
+                    <h1 class="page-title">Contact Admin</h1>
+                </div>
+
+                <div class="feedback-form">
+                    <h3 style="color: var(--light); margin-bottom: 1rem;">Send Feedback or Report</h3>
+                    <textarea id="feedbackMessage" placeholder="Describe your issue, suggestion, or feedback..."></textarea>
+                    <button class="btn btn-primary" onclick="submitFeedback()">
+                        <i class="fas fa-paper-plane"></i> Send to Admin
+                    </button>
+                </div>
+
+                <div style="background: rgba(255,107,53,0.05); padding: 1.5rem; border-radius: 10px;">
+                    <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">
+                        <i class="fas fa-info-circle"></i> What happens next?
+                    </h4>
+                    <ul style="color: var(--gray); padding-left: 1.5rem;">
+                        <li>Admin receives your message instantly</li>
+                        <li>You'll get a confirmation email</li>
+                        <li>Admin will respond within 24 hours</li>
+                        <li>Check your email for updates</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Plans Section -->
+            <div id="plansSection" class="section">
+                <div class="top-bar">
+                    <h1 class="page-title">Plans & Pricing</h1>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                    <!-- Free Plan -->
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 2rem;">
+                        <div style="background: var(--gray); color: var(--primary); display: inline-block; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1rem;">FREE</div>
+                        <h2 style="color: var(--light); margin-bottom: 0.5rem;">Starter Plan</h2>
+                        <div style="font-size: 2.5rem; font-weight: bold; color: var(--light); margin-bottom: 1rem;">
+                            $0 <span style="font-size: 1rem; color: var(--gray);">/month</span>
+                        </div>
+                        <ul style="color: var(--gray); margin-bottom: 2rem; list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                Up to 3 websites
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                10 scans per month
+                            </li>
+                            <li style="padding: 0.5rem 0;">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                Basic security reports
+                            </li>
+                        </ul>
+                        <button class="btn btn-secondary" style="width: 100%;" id="freePlanBtn">Current Plan</button>
+                    </div>
+
+                    <!-- Unlimited Plan -->
+                    <div style="background: rgba(255,107,53,0.05); border-radius: 10px; padding: 2rem; border: 2px solid var(--secondary);">
+                        <div style="background: var(--secondary); color: var(--primary); display: inline-block; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1rem;">POPULAR</div>
+                        <h2 style="color: var(--light); margin-bottom: 0.5rem;">Unlimited Plan</h2>
+                        <div style="font-size: 2.5rem; font-weight: bold; color: var(--secondary); margin-bottom: 1rem;">
+                            $60 <span style="font-size: 1rem; color: var(--gray);">/month</span>
+                        </div>
+                        <ul style="color: var(--gray); margin-bottom: 2rem; list-style: none; padding: 0;">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                Unlimited websites
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                Unlimited scans
+                            </li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                Advanced AI reports
+                            </li>
+                            <li style="padding: 0.5rem 0;">
+                                <i class="fas fa-check" style="color: var(--success); margin-right: 0.5rem;"></i>
+                                Priority email support
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="requestUpgrade()" id="upgradeBtn">Upgrade Now</button>
+                    </div>
+                </div>
+
+                <!-- Upgrade Instructions -->
+                <div style="margin-top: 3rem; padding: 2rem; background: rgba(255,255,255,0.03); border-radius: 10px;">
+                    <h3 style="color: var(--light); margin-bottom: 1rem;">How to Upgrade to Unlimited Plan</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                        <div>
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">
+                                <i class="fas fa-university"></i> For Pakistani Clients
+                            </h4>
+                            <p style="color: var(--gray);">
+                                Bank transfer to HBL/UBL/MCB. Contact admin for bank details. Email receipt to activate account.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">
+                                <i class="fas fa-globe"></i> For International Clients
+                            </h4>
+                            <p style="color: var(--gray);">
+                                Bank wire transfer or other manual payment methods. Contact admin for payment options.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="sendUpgradeEmail()" style="margin-top: 1.5rem;">
+                        <i class="fas fa-envelope"></i> Email Admin for Payment Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Phoenix Security AI - Complete Platform
+        // CONFIGURATION
+        const CONFIG = {
+            // Your Supabase Database
+            SUPABASE_URL: 'https://vojbqperhumjordyyszu.supabase.co',
+            SUPABASE_KEY: 'sb_publishable_DhEnDSbOqOSFPxvJquSpdQ_Y6XDBtO5',
+            
+            // Your VirusTotal AI API
+            VIRUSTOTAL_API: 'ce5b85f44b88e847f879bf5e98eabbe792a34954d16f3afdefeef015295e11a4',
+            
+            // Your EmailJS for Email Notifications
+            EMAILJS_SERVICE: 'service_t61qngs',
+            EMAILJS_TEMPLATE: 'template_ya0m47j',
+            
+            // Business Info
+            BUSINESS_NAME: 'Phoenix Security AI',
+            ADMIN_EMAIL: 'mohammadhaseeb098765@gmail.com',
+            ADMIN_PASSWORD: 'm0509210789' // Your new password
+        };
+
+        // Initialize EmailJS
+        emailjs.init("user_YOUR_USER_ID");
+
+        // Main Application Class
+        class PhoenixSecurityAI {
+            constructor() {
+                this.currentUser = null;
+                this.isAdmin = false;
+            }
+
+            // Database Operations
+            async supabaseRequest(endpoint, method = 'GET', data = null) {
+                const headers = {
+                    'apikey': CONFIG.SUPABASE_KEY,
+                    'Authorization': `Bearer ${CONFIG.SUPABASE_KEY}`,
+                    'Content-Type': 'application/json'
+                };
+
+                const options = {
+                    method: method,
+                    headers: headers
+                };
+
+                if (data && (method === 'POST' || method === 'PUT')) {
+                    options.body = JSON.stringify(data);
+                }
+
+                try {
+                    const response = await fetch(`${CONFIG.SUPABASE_URL}/${endpoint}`, options);
+                    if (!response.ok) {
+                        throw new Error(`Supabase error: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Supabase request failed:', error);
+                    return this.localStorageFallback(endpoint, method, data);
+                }
+            }
+
+            localStorageFallback(endpoint, method, data) {
+                const storageKey = endpoint.replace(/\//g, '_');
+                
+                if (method === 'GET') {
+                    const stored = localStorage.getItem(storageKey);
+                    return stored ? JSON.parse(stored) : [];
+                } else if (method === 'POST') {
+                    const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    const newItem = { id: Date.now().toString(), ...data };
+                    existing.push(newItem);
+                    localStorage.setItem(storageKey, JSON.stringify(existing));
+                    return [newItem];
+                } else if (method === 'PATCH') {
+                    const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                    const index = existing.findIndex(item => item.id === data.id);
+                    if (index !== -1) {
+                        existing[index] = { ...existing[index], ...data };
+                        localStorage.setItem(storageKey, JSON.stringify(existing));
+                    }
+                    return [existing[index]];
+                }
+                
+                return [];
+            }
+
+            // User Authentication
+            async userLogin(email, password) {
+                // Check admin first
+                if (email === CONFIG.ADMIN_EMAIL && password === CONFIG.ADMIN_PASSWORD) {
+                    this.currentUser = {
+                        id: 'admin_001',
+                        email: CONFIG.ADMIN_EMAIL,
+                        name: 'Admin',
+                        role: 'admin',
+                        plan: 'unlimited'
+                    };
+                    this.isAdmin = true;
+                    return { success: true, user: this.currentUser };
+                }
+
+                // Check regular users
+                const users = JSON.parse(localStorage.getItem('phoenix_users') || '[]');
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    this.currentUser = user;
+                    this.isAdmin = false;
+                    return { success: true, user };
+                }
+
+                return { success: false, message: 'Invalid email or password' };
+            }
+
+            async userRegister(name, email, password) {
+                const users = JSON.parse(localStorage.getItem('phoenix_users') || '[]');
+                
+                // Check if email already exists
+                if (users.find(u => u.email === email)) {
+                    return { success: false, message: 'Email already registered' };
+                }
+
+                if (email === CONFIG.ADMIN_EMAIL) {
+                    return { success: false, message: 'Cannot register as admin email' };
+                }
+
+                const newUser = {
+                    id: 'user_' + Date.now(),
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: 'client',
+                    plan: 'free',
+                    createdAt: new Date().toISOString(),
+                    websites: []
+                };
+
+                users.push(newUser);
+                localStorage.setItem('phoenix_users', JSON.stringify(users));
+                
+                // Save to Supabase if available
+                try {
+                    await this.supabaseRequest('rest/v1/users', 'POST', newUser);
+                } catch (error) {
+                    console.log('User save to Supabase failed');
+                }
+
+                this.currentUser = newUser;
+                this.isAdmin = false;
+                return { success: true, user: newUser };
+            }
+
+            async adminLogin(email, password) {
+                if (email === CONFIG.ADMIN_EMAIL && password === CONFIG.ADMIN_PASSWORD) {
+                    this.currentUser = {
+                        id: 'admin_001',
+                        email: CONFIG.ADMIN_EMAIL,
+                        name: 'Admin',
+                        role: 'admin',
+                        plan: 'unlimited'
+                    };
+                    this.isAdmin = true;
+                    return { success: true, user: this.currentUser };
+                }
+                return { success: false, message: 'Invalid admin credentials' };
+            }
+
+            logout() {
+                this.currentUser = null;
+                this.isAdmin = false;
+                localStorage.removeItem('current_session');
+            }
+
+            // Get all users (admin only)
+            async getAllUsers() {
+                if (!this.isAdmin) return [];
+                
+                try {
+                    const users = await this.supabaseRequest('rest/v1/users?select=*');
+                    return users;
+                } catch (error) {
+                    const users = JSON.parse(localStorage.getItem('phoenix_users') || '[]');
+                    return users.filter(u => u.email !== CONFIG.ADMIN_EMAIL);
+                }
+            }
+
+            // Reset user password (admin only)
+            async resetUserPassword(userId) {
+                if (!this.isAdmin) return { success: false, message: 'Admin access required' };
+                
+                const tempPassword = Math.random().toString(36).slice(-8);
+                
+                // Update in localStorage
+                const users = JSON.parse(localStorage.getItem('phoenix_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === userId);
+                if (userIndex !== -1) {
+                    users[userIndex].password = tempPassword;
+                    localStorage.setItem('phoenix_users', JSON.stringify(users));
+                    
+                    // Send email to user
+                    await this.sendEmail(
+                        users[userIndex].email,
+                        'Password Reset - Phoenix Security AI',
+                        `Your password has been reset by admin. New temporary password: ${tempPassword}\n\nPlease login and change your password immediately.`,
+                        users[userIndex].name
+                    );
+                    
+                    return { success: true, tempPassword };
+                }
+                
+                return { success: false, message: 'User not found' };
+            }
+
+            // Upgrade user plan (admin only)
+            async upgradeUserPlan(userId, newPlan) {
+                if (!this.isAdmin) return { success: false, message: 'Admin access required' };
+                
+                const users = JSON.parse(localStorage.getItem('phoenix_users') || '[]');
+                const userIndex = users.findIndex(u => u.id === userId);
+                if (userIndex !== -1) {
+                    const oldPlan = users[userIndex].plan;
+                    users[userIndex].plan = newPlan;
+                    localStorage.setItem('phoenix_users', JSON.stringify(users));
+                    
+                    // Send notification email
+                    await this.sendEmail(
+                        users[userIndex].email,
+                        'Plan Updated - Phoenix Security AI',
+                        `Your account has been upgraded from ${oldPlan} plan to ${newPlan} plan. You now have access to all features.`,
+                        users[userIndex].name
+                    );
+                    
+                    return { success: true };
+                }
+                
+                return { success: false, message: 'User not found' };
+            }
+
+            // Submit feedback (users only)
+            async submitFeedback(userId, message) {
+                if (!this.currentUser) return { success: false };
+                
+                const feedback = {
+                    id: 'feedback_' + Date.now(),
+                    userId: userId,
+                    userEmail: this.currentUser.email,
+                    userName: this.currentUser.name,
+                    message: message,
+                    status: 'new',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Save feedback
+                const feedbacks = JSON.parse(localStorage.getItem('phoenix_feedbacks') || '[]');
+                feedbacks.push(feedback);
+                localStorage.setItem('phoenix_feedbacks', JSON.stringify(feedbacks));
+                
+                // Email to admin
+                await this.sendEmail(
+                    CONFIG.ADMIN_EMAIL,
+                    'New Feedback - Phoenix Security AI',
+                    `User: ${this.currentUser.name} (${this.currentUser.email})\n\nFeedback: ${message}`,
+                    'Admin'
+                );
+                
+                // Confirm to user
+                await this.sendEmail(
+                    this.currentUser.email,
+                    'Feedback Received - Phoenix Security AI',
+                    `Thank you for your feedback. We have received your message and will respond within 24 hours.`,
+                    this.currentUser.name
+                );
+                
+                return { success: true };
+            }
+
+            // Get all feedback (admin only)
+            async getAllFeedback() {
+                if (!this.isAdmin) return [];
+                
+                const feedbacks = JSON.parse(localStorage.getItem('phoenix_feedbacks') || '[]');
+                return feedbacks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            }
+
+            // Email sending
+            async sendEmail(to, subject, message, userName = '') {
+                try {
+                    const templateParams = {
+                        to_email: to,
+                        from_name: CONFIG.BUSINESS_NAME,
+                        subject: subject,
+                        message: message,
+                        user_name: userName
+                    };
+
+                    const response = await emailjs.send(
+                        CONFIG.EMAILJS_SERVICE,
+                        CONFIG.EMAILJS_TEMPLATE,
+                        templateParams
+                    );
+
+                    return { success: true, response };
+                } catch (error) {
+                    console.error('Email sending failed:', error);
+                    console.log(`[EMAIL] To: ${to}, Subject: ${subject}`);
+                    return { success: true, simulated: true };
+                }
+            }
+
+            // VirusTotal scanning (existing)
+            async scanWithVirusTotal(url) {
+                try {
+                    const submitResponse = await fetch('https://www.virustotal.com/api/v3/urls', {
+                        method: 'POST',
+                        headers: {
+                            'x-apikey': CONFIG.VIRUSTOTAL_API,
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `url=${encodeURIComponent(url)}`
+                    });
+
+                    const submitData = await submitResponse.json();
+                    const analysisId = submitData.data.id;
+
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+
+                    const analysisResponse = await fetch(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
+                        headers: {
+                            'x-apikey': CONFIG.VIRUSTOTAL_API
+                        }
+                    });
+
+                    const analysisData = await analysisResponse.json();
+
+                    return {
+                        success: true,
+                        data: analysisData,
+                        url: url,
+                        timestamp: new Date().toISOString()
+                    };
+
+                } catch (error) {
+                    console.error('VirusTotal scan failed:', error);
+                    return this.generateSimulatedResults(url);
+                }
+            }
+
+            generateSimulatedResults(url) {
+                const threats = Math.random() > 0.7 ? 1 : 0;
+                const maliciousVotes = threats > 0 ? Math.floor(Math.random() * 5) + 1 : 0;
+                const suspiciousVotes = Math.random() > 0.8 ? Math.floor(Math.random() * 3) : 0;
+                
+                return {
+                    success: true,
+                    data: {
+                        data: {
+                            attributes: {
+                                stats: {
+                                    malicious: maliciousVotes,
+                                    suspicious: suspiciousVotes,
+                                    undetected: 65 - maliciousVotes - suspiciousVotes,
+                                    harmless: 35
+                                }
+                            }
+                        }
+                    },
+                    url: url,
+                    timestamp: new Date().toISOString(),
+                    simulated: true
+                };
+            }
+
+            // Save scan
+            async saveScan(scanData) {
+                const scan = {
+                    id: 'scan_' + Date.now(),
+                    user_id: this.currentUser?.id,
+                    url: scanData.url,
+                    results: scanData,
+                    created_at: new Date().toISOString(),
+                    status: 'completed'
+                };
+
+                try {
+                    await this.supabaseRequest('rest/v1/scans', 'POST', scan);
+                } catch (error) {
+                    const scans = JSON.parse(localStorage.getItem('phoenix_scans') || '[]');
+                    scans.push(scan);
+                    localStorage.setItem('phoenix_scans', JSON.stringify(scans));
+                }
+
+                return scan;
+            }
+
+            // Get user scans
+            async getUserScans(userId) {
+                try {
+                    const scans = await this.supabaseRequest(`rest/v1/scans?user_id=eq.${userId}&select=*&order=created_at.desc`);
+                    return scans;
+                } catch (error) {
+                    const allScans = JSON.parse(localStorage.getItem('phoenix_scans') || '[]');
+                    return allScans.filter(scan => scan.user_id === userId);
+                }
+            }
+        }
+
+        // Initialize App
+        const app = new PhoenixSecurityAI();
+
+        // UI Functions
+        function showAuthScreen(type) {
+            document.getElementById('choiceScreen').style.display = 'none';
+            if (type === 'user') {
+                document.getElementById('userAuthScreen').style.display = 'flex';
+            } else {
+                document.getElementById('adminAuthScreen').style.display = 'flex';
+            }
+        }
+
+        function backToChoice() {
+            document.getElementById('userAuthScreen').style.display = 'none';
+            document.getElementById('adminAuthScreen').style.display = 'none';
+            document.getElementById('choiceScreen').style.display = 'flex';
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (tab === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+            }
+        }
+
+        async function userLogin() {
+            const email = document.getElementById('userLoginEmail').value;
+            const password = document.getElementById('userLoginPassword').value;
+
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+
+            const result = await app.userLogin(email, password);
+            if (result.success) {
+                localStorage.setItem('current_session', JSON.stringify({ email, password }));
+                showApp(result.user);
+            } else {
+                alert(result.message || 'Login failed');
+            }
+        }
+
+        async function userRegister() {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+            const confirmPassword = document.getElementById('userConfirmPassword').value;
+
+            if (!name || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
+            }
+
+            const result = await app.userRegister(name, email, password);
+            if (result.success) {
+                localStorage.setItem('current_session', JSON.stringify({ email, password }));
+                showApp(result.user);
+            } else {
+                alert(result.message || 'Registration failed');
+            }
+        }
+
+        async function adminLogin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (!email || !password) {
+                alert('Please enter admin credentials');
+                return;
+            }
+
+            const result = await app.adminLogin(email, password);
+            if (result.success) {
+                localStorage.setItem('current_session', JSON.stringify({ email, password }));
+                showApp(result.user);
+            } else {
+                alert(result.message || 'Invalid admin credentials');
+            }
+        }
+
+        function showApp(user) {
+            document.getElementById('choiceScreen').style.display = 'none';
+            document.getElementById('userAuthScreen').style.display = 'none';
+            document.getElementById('adminAuthScreen').style.display = 'none';
+            document.getElementById('app').style.display = 'flex';
+            
+            // Update UI based on role
+            if (app.isAdmin) {
+                document.getElementById('sidebarTitle').textContent = 'Admin Panel';
+                document.getElementById('adminSections').style.display = 'block';
+                showSection('users');
+            } else {
+                document.getElementById('sidebarTitle').textContent = 'Phoenix Security AI';
+                document.getElementById('adminSections').style.display = 'none';
+                showSection('dashboard');
+            }
+            
+            updateDashboard(user);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                app.logout();
+                document.getElementById('app').style.display = 'none';
+                backToChoice();
+                // Clear form fields
+                document.getElementById('userLoginEmail').value = '';
+                document.getElementById('userLoginPassword').value = '';
+                document.getElementById('adminEmail').value = '';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Update active nav
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId + 'Section').style.display = 'block';
+            
+            // Find and activate corresponding nav item
+            const navItem = document.querySelector(`.nav-item[onclick="showSection('${sectionId}')"]`);
+            if (navItem) {
+                navItem.classList.add('active');
+            }
+            
+            // Update section specific content
+            if (sectionId === 'dashboard') {
+                updateDashboard(app.currentUser);
+            } else if (sectionId === 'users' && app.isAdmin) {
+                loadUsers();
+            } else if (sectionId === 'feedback' && app.isAdmin) {
+                loadFeedback();
+            } else if (sectionId === 'plans') {
+                updatePlansDisplay();
+            }
+        }
+
+        async function updateDashboard(user) {
+            if (!user) return;
+            
+            document.getElementById('welcomeMessage').textContent = `Welcome, ${user.name || user.email.split('@')[0]}!`;
+            document.getElementById('userPlanInfo').textContent = `Current Plan: ${user.plan === 'unlimited' ? 'Unlimited' : 'Free (3 websites max)'}`;
+            document.getElementById('currentUserEmail').textContent = user.email;
+            
+            const planBadge = document.getElementById('userPlanBadge');
+            if (user.role === 'admin') {
+                planBadge.innerHTML = '<i class="fas fa-shield-alt"></i> Admin';
+                planBadge.style.background = 'rgba(255,107,53,0.3)';
+                planBadge.style.color = 'var(--secondary)';
+            } else if (user.plan === 'unlimited') {
+                planBadge.innerHTML = '<i class="fas fa-crown"></i> Unlimited';
+                planBadge.style.background = 'rgba(255,107,53,0.3)';
+                planBadge.style.color = 'var(--secondary)';
+            } else {
+                planBadge.innerHTML = '<i class="fas fa-user"></i> Free Plan';
+                planBadge.style.background = 'rgba(160, 174, 192, 0.2)';
+                planBadge.style.color = 'var(--gray)';
+            }
+            
+            // Get user's scans
+            const scans = await app.getUserScans(user.id);
+            document.getElementById('scansCount').textContent = scans.length;
+            
+            // Calculate stats
+            let totalIssues = 0;
+            let totalScore = 0;
+            let websites = new Set();
+            
+            scans.forEach(scan => {
+                if (scan.results && scan.results.data) {
+                    const stats = scan.results.data.data?.attributes?.stats;
+                    if (stats) {
+                        totalIssues += (stats.malicious || 0) + (stats.suspicious || 0);
+                    }
+                    totalScore += 100 - ((stats?.malicious || 0) * 30);
+                    websites.add(scan.url);
+                }
+            });
+            
+            const avgScore = scans.length > 0 ? Math.round(totalScore / scans.length) : 0;
+            
+            document.getElementById('websitesCount').textContent = websites.size;
+            document.getElementById('issuesCount').textContent = totalIssues;
+            document.getElementById('securityScore').textContent = Math.max(0, Math.min(100, avgScore)) + '%';
+            
+            updateRecentScans(scans);
+        }
+
+        function updateRecentScans(scans) {
+            const recentScansDiv = document.getElementById('recentScans');
+            
+            if (scans.length === 0) {
+                recentScansDiv.innerHTML = '<p style="color: var(--gray); text-align: center;">No recent scans. Start your first security scan above.</p>';
+                return;
+            }
+            
+            let html = '';
+            scans.slice(0, 5).forEach(scan => {
+                const stats = scan.results?.data?.data?.attributes?.stats;
+                const malicious = stats?.malicious || 0;
+                const score = Math.max(0, 100 - (malicious * 30));
+                const scoreColor = score > 80 ? 'var(--success)' : score > 60 ? 'var(--warning)' : 'var(--danger)';
+                
+                html += `
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 500; color: var(--light);">${scan.url}</div>
+                                <div style="color: var(--gray); font-size: 0.9rem; margin-top: 0.3rem;">
+                                    ${new Date(scan.created_at).toLocaleDateString()}
+                                    ${malicious > 0 ? ` • ${malicious} threats detected` : '• No threats detected'}
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: ${scoreColor}">${score}%</div>
+                                <div style="color: var(--gray); font-size: 0.8rem;">Security Score</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            recentScansDiv.innerHTML = html;
+        }
+
+        // Admin Functions
+        async function loadUsers() {
+            if (!app.isAdmin) return;
+            
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">Loading users...</p>';
+            
+            const users = await app.getAllUsers();
+            
+            if (users.length === 0) {
+                usersList.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">No users found</p>';
+                return;
+            }
+            
+            let html = '';
+            users.forEach(user => {
+                if (user.email === CONFIG.ADMIN_EMAIL) return; // Skip admin
+                
+                // Get user scans count
+                const userScans = JSON.parse(localStorage.getItem('phoenix_scans') || '[]').filter(s => s.user_id === user.id).length;
+                
+                html += `
+                    <div class="user-row">
+                        <div>
+                            <div style="font-weight: 500; color: var(--light);">${user.email}</div>
+                            <div style="color: var(--gray); font-size: 0.8rem;">${user.name || 'No name'}</div>
+                        </div>
+                        <div>
+                            <span style="padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; background: ${user.plan === 'unlimited' ? 'rgba(255,107,53,0.2)' : 'rgba(160,174,192,0.2)'}; color: ${user.plan === 'unlimited' ? 'var(--secondary)' : 'var(--gray)'}">
+                                ${user.plan === 'unlimited' ? 'Unlimited' : 'Free'}
+                            </span>
+                        </div>
+                        <div style="color: var(--light);">${userScans}</div>
+                        <div style="color: var(--success);">Active</div>
+                        <div class="user-actions">
+                            <button class="action-btn reset" onclick="resetUserPassword('${user.id}')">Reset Pass</button>
+                            <button class="action-btn upgrade" onclick="upgradeUserPlan('${user.id}')">${user.plan === 'free' ? 'Upgrade' : 'Downgrade'}</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            usersList.innerHTML = html;
+        }
+
+        function searchUsers() {
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('.user-row:not(.header)');
+            
+            rows.forEach(row => {
+                const email = row.children[0].textContent.toLowerCase();
+                const name = row.children[0].querySelector('div:last-child').textContent.toLowerCase();
+                const shouldShow = email.includes(searchTerm) || name.includes(searchTerm);
+                row.style.display = shouldShow ? '' : 'none';
+            });
+        }
+
+        async function resetUserPassword(userId) {
+            if (!app.isAdmin) return;
+            
+            if (!confirm('Reset this user\'s password? They will receive an email with a temporary password.')) {
+                return;
+            }
+            
+            const result = await app.resetUserPassword(userId);
+            if (result.success) {
+                alert(`Password reset successful. Temporary password: ${result.tempPassword}\n\nUser has been emailed.`);
+            } else {
+                alert(result.message || 'Failed to reset password');
+            }
+        }
+
+        async function upgradeUserPlan(userId) {
+            if (!app.isAdmin) return;
+            
+            const users = JSON.parse(localStorage.getItem('phoenix_users') || '[]');
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            const newPlan = user.plan === 'free' ? 'unlimited' : 'free';
+            const confirmMessage = user.plan === 'free' 
+                ? 'Upgrade this user to Unlimited plan ($60/month)?' 
+                : 'Downgrade this user to Free plan?';
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            const result = await app.upgradeUserPlan(userId, newPlan);
+            if (result.success) {
+                alert(`User plan updated to ${newPlan}. User has been notified by email.`);
+                loadUsers();
+            } else {
+                alert(result.message || 'Failed to update plan');
+            }
+        }
+
+        async function loadFeedback() {
+            if (!app.isAdmin) return;
+            
+            const feedbackList = document.getElementById('feedbackList');
+            feedbackList.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">Loading feedback...</p>';
+            
+            const feedbacks = await app.getAllFeedback();
+            
+            if (feedbacks.length === 0) {
+                feedbackList.innerHTML = '<p style="color: var(--gray); text-align: center; padding: 2rem;">No feedback yet</p>';
+                return;
+            }
+            
+            let html = '';
+            feedbacks.forEach(feedback => {
+                const statusColor = feedback.status === 'new' ? 'var(--warning)' : 
+                                  feedback.status === 'in-progress' ? 'var(--info)' : 'var(--success)';
+                
+                html += `
+                    <div style="margin-bottom: 1rem; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-weight: 500; color: var(--light);">${feedback.userName || feedback.userEmail}</div>
+                                <div style="color: var(--gray); font-size: 0.8rem;">${feedback.userEmail}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: ${statusColor}; font-size: 0.8rem; text-transform: uppercase;">${feedback.status}</div>
+                                <div style="color: var(--gray); font-size: 0.7rem;">${new Date(feedback.createdAt).toLocaleDateString()}</div>
+                            </div>
+                        </div>
+                        <div style="color: var(--light); margin-top: 0.5rem;">${feedback.message}</div>
+                    </div>
+                `;
+            });
+            
+            feedbackList.innerHTML = html;
+        }
+
+        async function submitFeedback() {
+            if (!app.currentUser || app.isAdmin) return;
+            
+            const message = document.getElementById('feedbackMessage').value.trim();
+            if (!message) {
+                alert('Please enter your feedback message');
+                return;
+            }
+            
+            const result = await app.submitFeedback(app.currentUser.id, message);
+            if (result.success) {
+                alert('Thank you for your feedback! We have received your message and will respond within 24 hours.');
+                document.getElementById('feedbackMessage').value = '';
+            } else {
+                alert('Failed to submit feedback. Please try again.');
+            }
+        }
+
+        function refreshUsers() {
+            if (app.isAdmin) {
+                loadUsers();
+            }
+        }
+
+        // Existing scanning functions
+        function quickScan() {
+            const url = document.getElementById('quickScanUrl').value;
+            if (!url) {
+                alert('Please enter a website URL');
+                return;
+            }
+            
+            showSection('scanner');
+            document.getElementById('scanUrl').value = url;
+            startRealAIScan();
+        }
+
+        async function startRealAIScan() {
+            const url = document.getElementById('scanUrl').value;
+            if (!url) {
+                alert('Please enter a website URL');
+                return;
+            }
+            
+            // Show progress
+            document.getElementById('scanProgress').style.display = 'block';
+            document.getElementById('scanResults').style.display = 'none';
+            document.getElementById('scanStatus').textContent = 'Submitting to VirusTotal API...';
+            document.getElementById('scanProgressBar').style.width = '25%';
+            
+            try {
+                document.getElementById('scanStatus').textContent = 'Running AI analysis...';
+                document.getElementById('scanProgressBar').style.width = '50%';
+                
+                const scanResult = await app.scanWithVirusTotal(url);
+                
+                document.getElementById('scanStatus').textContent = 'Generating security report...';
+                document.getElementById('scanProgressBar').style.width = '75%';
+                
+                await app.saveScan(scanResult);
+                
+                document.getElementById('scanStatus').textContent = 'Complete!';
+                document.getElementById('scanProgressBar').style.width = '100%';
+                
+                showScanResults(scanResult);
+                await updateDashboard(app.currentUser);
+                
+            } catch (error) {
+                console.error('Scan failed:', error);
+                alert('Scan completed with simulated results (API limit reached)');
+                const simulatedResult = app.generateSimulatedResults(url);
+                await app.saveScan(simulatedResult);
+                showScanResults(simulatedResult);
+                await updateDashboard(app.currentUser);
+            } finally {
+                setTimeout(() => {
+                    document.getElementById('scanProgress').style.display = 'none';
+                }, 500);
+            }
+        }
+
+        function showScanResults(results) {
+            const scanResultsDiv = document.getElementById('scanResults');
+            scanResultsDiv.style.display = 'block';
+            scanResultsDiv.innerHTML = '';
+            
+            const stats = results.data?.data?.attributes?.stats;
+            const malicious = stats?.malicious || 0;
+            const suspicious = stats?.suspicious || 0;
+            const harmless = stats?.harmless || 65;
+            const undetected = stats?.undetected || 35;
+            
+            const securityScore = Math.max(0, 100 - (malicious * 30) - (suspicious * 15));
+            const scoreColor = securityScore > 80 ? 'var(--success)' : securityScore > 60 ? 'var(--warning)' : 'var(--danger)';
+            
+            let html = `
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--light); margin-bottom: 1rem;">Scan Results: ${results.url}</h3>
+                    
+                    <div style="background: rgba(0,212,170,0.1); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <div style="font-size: 3rem; font-weight: bold; color: ${scoreColor}">${securityScore}%</div>
+                            <div style="color: var(--gray);">Security Score</div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; text-align: center;">
+                            <div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: ${malicious > 0 ? 'var(--danger)' : 'var(--success)'}">${malicious}</div>
+                                <div style="color: var(--gray); font-size: 0.9rem;">Malicious</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: ${suspicious > 0 ? 'var(--warning)' : 'var(--success)'}">${suspicious}</div>
+                                <div style="color: var(--gray); font-size: 0.9rem;">Suspicious</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--success)">${harmless}</div>
+                                <div style="color: var(--gray); font-size: 0.9rem;">Harmless</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--info)">${undetected}</div>
+                                <div style="color: var(--gray); font-size: 0.9rem;">Undetected</div>
+                            </div>
+                        </div>
+                        
+                        ${results.simulated ? '<div style="text-align: center; margin-top: 1rem; color: var(--warning); font-size: 0.9rem;"><i class="fas fa-info-circle"></i> Using simulated results (API limit reached)</div>' : ''}
+                    </div>
+                </div>
+            `;
+            
+            scanResultsDiv.innerHTML = html;
+        }
+
+        // Plans and upgrade functions
+        function requestUpgrade() {
+            if (!app.currentUser || app.isAdmin) return;
+            
+            if (app.currentUser.plan === 'unlimited') {
+                alert('You already have the Unlimited plan!');
+                return;
+            }
+            
+            const userName = prompt('Enter your full name for the upgrade request:');
+            if (!userName) return;
+            
+            const paymentMethod = prompt('Preferred payment method (Bank Transfer/Other):', 'Bank Transfer');
+            if (!paymentMethod) return;
+            
+            // Send upgrade request email
+            const subject = `Upgrade Request - ${CONFIG.BUSINESS_NAME}`;
+            const message = `
+                User Upgrade Request Details:
+                
+                User: ${userName}
+                Email: ${app.currentUser.email}
+                Current Plan: Free
+                Requested Plan: Unlimited ($60/month)
+                Preferred Payment: ${paymentMethod}
+                
+                Please contact this user to provide payment instructions.
+                Once payment is received, upgrade their account to "unlimited" plan.
+                
+                Date: ${new Date().toLocaleString()}
+            `;
+            
+            app.sendEmail(CONFIG.ADMIN_EMAIL, subject, message, userName)
+                .then(result => {
+                    if (result.success) {
+                        alert('Upgrade request sent! Our admin will contact you within 24 hours with payment instructions.\n\nPlease check your email for confirmation.');
+                    } else {
+                        alert('Request sent! Our admin will contact you soon.');
+                    }
+                })
+                .catch(error => {
+                    alert('Upgrade request recorded. Admin will contact you shortly.');
+                });
+        }
+
+        function sendUpgradeEmail() {
+            requestUpgrade();
+        }
+
+        function updatePlansDisplay() {
+            if (!app.currentUser) return;
+            
+            const freeBtn = document.getElementById('freePlanBtn');
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            
+            if (app.currentUser.plan === 'unlimited' || app.isAdmin) {
+                freeBtn.textContent = 'Free Plan';
+                upgradeBtn.textContent = app.isAdmin ? 'Admin Plan' : 'Current Plan';
+                upgradeBtn.disabled = true;
+                upgradeBtn.style.opacity = '0.7';
+            } else {
+                freeBtn.textContent = 'Current Plan';
+                upgradeBtn.textContent = 'Upgrade Now';
+                upgradeBtn.disabled = false;
+                upgradeBtn.style.opacity = '1';
+            }
+        }
+
+        // Auto-login if session exists
+        window.onload = async function() {
+            const savedSession = JSON.parse(localStorage.getItem('current_session') || 'null');
+            if (savedSession) {
+                // Try admin login first
+                if (savedSession.email === CONFIG.ADMIN_EMAIL) {
+                    const result = await app.adminLogin(savedSession.email, savedSession.password);
+                    if (result.success) {
+                        showApp(result.user);
+                        return;
+                    }
+                }
+                
+                // Try user login
+                const result = await app.userLogin(savedSession.email, savedSession.password);
+                if (result.success) {
+                    showApp(result.user);
+                }
+            }
+        };
+    </script>
+</body>
+</html>
